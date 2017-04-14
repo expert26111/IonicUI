@@ -1,0 +1,285 @@
+<!--<ion-pane ng-controller="ListController">-->
+<!--<ion-header-bar class="bar bar-header bar-balanced">-->
+<!--<button class=" icon ion-navicon button button-clear">Click</button>-->
+<!--<h1 class="title">Ionic Starter</h1>-->
+<!--<button class=" icon ion-gear-a button button-clear">Click</button>-->
+<!--</ion-header-bar>-->
+
+<!--<ion-header-bar class="bar-dark">-->
+<ion-view view-title="Artist List">
+  <ion-nav-buttons side="primary">
+    <button ng-click="data.showDeleted = !data.showDeleted; data.showReorder = false;"
+            class="button button-icon ion-minus-circled"></button>
+  </ion-nav-buttons>
+  <!--<h2 class="title">Artist list</h2>-->
+  <ion-nav-buttons side="secondary">
+    <button ng-click="data.showReorder = !data.showReorder; data.showDeleted=false;"
+            class="button button-icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <!--</ion-header-bar>-->
+
+
+  <div class="bar bar-subheader item-input-inset bar-light">
+    <label class="item-input-wrapper">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input type="search" ng-model="query" placeholder="Search">
+    </label>
+
+  </div>
+
+
+  <!--<div class="bar bar-subheader">-->
+  <!--<h2 class="title">Sub Header</h2>-->
+  <!--</div>-->
+  <ion-content class="padding has-subheader">
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+
+    <ion-nav-view></ion-nav-view>
+
+    <ion-list show-reorder="data.showReorder"
+              show-delete="data.showDeleted">
+      <ion-item href="#/tab/list/{{item.shortname}}" ng-class="{'star':item.star}"
+                ng-repeat="item in artists|filter:query" class="item-thumbnail-left item-icon-right item-text-wrap">
+        <img ng-src="js/img/{{item.shortname}}_tn.jpg" alt="{{item.name}} Photo">
+        <h2>{{item.name}}</h2>
+        <h3>{{item.reknown}}</h3>
+        <p>{{item.bio | limitTo: 150}}
+          {{item.bio.length > 100 ? '&hellip;' : ''}}</p>
+        <button class="button button-clear icon ion-star button-assertive"
+                ng-click="toggleStar(item)" ng-show="item.star"></button>
+        <ion-option-button class="button-dark" ng-click="toggleStar(item)">
+          <i class="icon ion-star"></i>
+        </ion-option-button>
+        <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button>
+        <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item,$fromIndex,$toIndex)">
+        </ion-reorder-button>
+      </ion-item>
+    </ion-list>
+
+
+    <!--or list-->
+    <div class="card">
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">First Name</span>
+        <input type="text" placeholder="First Name">
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Last Name</span>
+        <input type="text" placeholder="Last Name">
+      </label>
+
+      <label class="item item-input">
+        <textarea placeholder="Comments"></textarea>
+      </label>
+
+      <div class="item item-divider">I want to be a...</div>
+
+      <div class="item item-checkbox checkbox-dark checkbox-positive">
+        <label class="checkbox">
+          <input type="checkbox">
+        </label>
+        <span class="input-label">Rock Star</span>
+      </div>
+
+      <label class="item item-radio">
+        <input type="radio" name="social">
+        <div class="item-content">Facebook</div>
+        <i class="radio-icon ion-social-facebook"></i>
+      </label>
+
+
+      <label class="item item-radio">
+        <input type="radio" name="social">
+        <div class="item-content">Twitter</div>
+        <i class="radio-icon ion-social-twitter"></i>
+      </label>
+
+      <label class="item item-radio">
+        <input type="radio" name="social">
+        <div class="item-content">Youtube</div>
+        <i class="radio-icon ion-social-youtube"></i>
+      </label>
+
+
+      <div class="item item-toggle">
+        <span class="input-label">Awesomness</span>
+        <label class="toggle">
+          <input type="checkbox">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+
+      <div class="item range range-positive">
+        <i class="icon ion-sad-outline"></i>
+        <input type="range" name="feeling" min="0" max="100" value="50">
+        <i class="icon ion-happy"></i>
+      </div>
+
+      <label class="item item-input item-select">
+        <div class="input-label">Favourite Pet</div>
+        <select>
+          <option>Dogs</option>
+          <option>Cats</option>
+          <option>Llamas</option>
+        </select>
+      </label>
+
+
+    </div>
+
+    <div class="item item-input-inset">
+      <label class="item-input-wrapper">
+        <input type="text" placeholder="Address">
+      </label>
+      <button class="button button-small">Search</button>
+    </div>
+
+    <ul class="list">
+      <li class="item">Item 1</li>
+      <a href="#" class="item item-icon-left"><i class="icon ion-email"></i>
+        Check mail
+      </a>
+      <a href="#" class="item item-icon-left item-icon-right"><i class="icon ion-chatbubble-working"></i>
+        Item 2
+        <i class="icon ion-ionic"></i>
+      </a>
+      <a href="#" class="item item-icon-left item-icon-right"><i class="icon ion-mic-a"></i>
+        Item 3
+        <span class="item-note">Record</span>
+      </a>
+      <a href="#" class="item item-icon-left item-icon-right"><i class="icon ion-mic-a"></i>
+        Item 4
+        <span class="badge badge-assertive">3</span>
+      </a>
+      <a href="#" class="item item-button-right">
+        Item 5
+        <button class="button button-assertive"><i class="icon ion-person"></i></button>
+      </a>
+
+
+      <a href="#" class="item item-avatar">
+        Item 6
+        <img src="http://placehold.it/100x100" alt="Avatar">
+      </a>
+
+      <a href="#" class="item item-thumbnail-left">
+        Item 7
+        <img src="http://placehold.it/100x100" alt="Avatar">
+      </a>
+
+    </ul>
+
+
+    <div class="list list-inset">
+      <div class="item item-divider">Header</div>
+      <div class="item item-image item-body">
+        <img src="http://placehold.it/600x200" alt="Item Img">
+        <p>
+          Bulgaria (Listeni/bʌlˈɡɛəriə, bʊl-/; Bulgarian: България, tr. Bǎlgariya), officially the Republic of Bulgaria
+          (Bulgarian: Република България, tr. Republika Bǎlgariya, pronounced [rɛˈpublikɐ bɐɫˈɡarijɐ]), is a country in
+          southeastern Europe. It is bordered by Romania to the north, Serbia and Macedonia to the west, Greece and
+          Turkey
+          to the south, and the Black Sea to the east. With a territory of 110,994 square kilometres (42,855 sq mi),
+          Bulgaria is Europe's 16th-largest country.
+        </p>
+      </div>
+      <div class="item item-icon-left item-text-wrap">
+        <i class="icon ion-home"></i>
+        Bulgaria (Listeni/bʌlˈɡɛəriə, bʊl-/; Bulgarian: България, tr. Bǎlgariya), officially the Republic of Bulgaria
+        (Bulgarian: Република България, tr. Republika Bǎlgariya, pronounced [rɛˈpublikɐ bɐɫˈɡarijɐ]), is a country in
+        southeastern Europe. It is bordered by Romania to the north, Serbia and Macedonia to the west, Greece and Turkey
+        to the south, and the Black Sea to the east. With a territory of 110,994 square kilometres (42,855 sq mi),
+        Bulgaria is Europe's 16th-largest country.
+      </div>
+      <div class="item item-divider">Footer</div>
+    </div>
+
+
+    <div class="card">
+      <div class="item">
+        Bulgaria (Listeni/bʌlˈɡɛəriə, bʊl-/; Bulgarian: България, tr. Bǎlgariya), officially the Republic of Bulgaria
+        (Bulgarian: Република България, tr. Republika Bǎlgariya, pronounced [rɛˈpublikɐ bɐɫˈɡarijɐ]), is a country in
+        southeastern Europe. It is bordered by Romania to the north, Serbia and Macedonia to the west, Greece and Turkey
+        to the south, and the Black Sea to the east. With a territory of 110,994 square kilometres (42,855 sq mi),
+        Bulgaria is Europe's 16th-largest country.
+      </div>
+    </div>
+
+
+    <p>Sofia (/ˈsoʊfiə/ or /ˈsɒfiə/ or /soʊˈfiːə/;[10][11]) (Bulgarian: София, Sofiya,[12][13]pronounced [ˈsɔfiə,
+      ˈsɔfjə] ( listen)) is the capital and largest city of Bulgaria. The city has a population of 1.26 million, while
+      1.68 million people live in its metropolitan area.[8] The city is located at the foot of Vitosha Mountain in the
+      western part of the country, within less than 50 kilometres (31 mi) drive from the Serbian border. Its location in
+      the centre of the Balkan peninsula means that it is the midway between the Black Sea and the Adriatic Sea, whereas
+      the Aegean Sea is the closest to it.[14][15]</p>
+
+    <button class="button button-block">Hello</button>
+    <button class="button button-small">Hello</button>
+    <button class="button button-outline button-positive button-large">Hello</button>
+    <a href="" class="button">Hello again</a>
+    <button class="button button-positive button-clear">Hi dig</button>
+
+    <div class="button-bar">
+      <button class="button button-positive icon icon-left ion-social-twitter">twitter</button>
+      <button class="button button-positive icon icon-left  ion-social-facebook">facebook</button>
+      <button class="button button-positive icon icon-left ion-social-youtube">youtube</button>
+    </div>
+
+    <div class="button-bar">
+      <button class="button button-positive button-clear icon ion-social-twitter"></button>
+      <button class="button button-positive button-clear icon   ion-social-facebook"></button>
+      <button class="button button-positve button-clear icon icon-left ion-social-youtube"></button>
+    </div>
+
+    <p><i class="icon ion-ionic">ionic</i></p>
+    <button><i class="icon ion-ionic">ionic</i></button>
+    <p>
+      <button class="button button-positive"><i class="icon ion-ionic">ionic</i></button>
+    </p>
+    <p>
+      <button class=" icon ion-ionic icon-right button button-positive">ionic</button>
+    </p>
+
+  </ion-content>
+  <!--<ion-footer-bar class="bar-positive">-->
+  <!--<h1 class="title">Footer</h1>-->
+  <!--</ion-footer-bar>-->
+
+  <div class="tabs-striped tabs-positive tabs-top tabs-color-light tabs-background-calm">
+    <div class="tabs  tabs-icon-top">
+      <a class="tab-item">
+        <i class="icon ion-home">
+
+        </i>
+        Home
+      </a>
+      <a class="tab-item">
+        <i class="icon ion-person">
+
+        </i>
+        About us
+      </a>
+      <a class="tab-item">
+        <i class="icon ion-calendar">
+
+        </i>
+        Calendar
+      </a>
+    </div>
+  </div>
+
+
+  <ion-tabs class="tabs-icon-top">
+    <ion-tab badge="1" badge-style="badge-assertive" icon="ion-home" title="Home"></ion-tab>
+    <ion-tab title="About"></ion-tab>
+    <ion-tab title="Calendar"></ion-tab>
+  </ion-tabs>
+
+</ion-view>
+<!--</ion-pane>-->
+
+
